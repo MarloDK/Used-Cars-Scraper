@@ -7,21 +7,27 @@ const dba = require('./websites/dba.js')
 
 const userAgent = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36'}
 
+var foundListings = []
 class Listing {
-    title = ''
+    Id = 0
+
+    price = 0
     kilometers = 0
     productionYear = 0
-    
+    imageLink = ''
 
     link = ''
 
-    constructor(title, kilometers, productionYear, link) {
-        this.title = title
+    constructor(link, imageLink, price, kilometers, productionYear) {
+        this.price = price
         this.kilometers = kilometers
         this.productionYear = productionYear
+        this.imageLink = imageLink
         this.link = link
 
-        console.log(`Created new listing object for listing: ${link}`)
+        this.Id = foundListings.length + 1;
+
+        //console.log(`Created new listing object for listing: ${link}`)
     }
 }
 
@@ -61,18 +67,17 @@ function ScrapeUrl(url) {
                 .then(({data}) => {
                     const listingPage = cheerio.load(data)
 
-                    //var productImage = listingPage('.bas-MuiGalleryImageComponent-image').text()
-                    // Gør som før med href, linje 50
-
+                    var imageLink = listingPage('#root > div.nmp-ads-layout__page > div.nmp-ads-layout__content > div.bas-Wrapper-wrapper > article > main > div.bas-MuiVipPageComponent-mainGallery > a > div > img').attr('src')
                     var price = listingPage('.bas-MuiCarPriceComponent-value').text()
-                    var productionYear = listingPage('.bas-MuiCarPriceComponent-value').text()
-                    var kilometers = listingPage('.bas-MuiCarPriceComponent-value').text()
+                    var productionYear = listingPage('#root > div.nmp-ads-layout__page > div.nmp-ads-layout__content > div.bas-Wrapper-wrapper > article > main > div:nth-child(5) > div > table > tbody > tr:nth-child(1) > td').text()
+                    var kilometers = listingPage('#root > div.nmp-ads-layout__page > div.nmp-ads-layout__content > div.bas-Wrapper-wrapper > article > main > div:nth-child(5) > div > table > tbody > tr:nth-child(3) > td').text()
 
-                    console.log(`Price: ${price} \nLink: ${listingUrl}`)
+                    let newListing = new Listing(listingUrl, imageLink, price, kilometers, productionYear)
+                    foundListings.push(newListing)
+
+                    console.log(newListing)
                 })
-        });
-
-        //console.log(listingUrls)
+        })
     })
     .catch((error) => {
         console.log(error)
