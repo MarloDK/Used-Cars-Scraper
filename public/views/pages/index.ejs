@@ -8,14 +8,6 @@
 </head>
 <body>
     <%- include ('../templateFiles/header')  -%>
-    
-    <%= listings.forEach(listing => { %>
-        <a href="<%= listing.link %>" id="listingsContainer">
-            <!--<img class="listing-image" src="<%= listing.imageLink %>">-->
-            <h2 class="listing-title">Search Term</h2>
-            <p class="price"><%= listing.price %></p>
-        </a>       
-    <%= }); %>
 
 
     

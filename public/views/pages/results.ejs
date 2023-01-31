@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Finder</title>
+</head>
+<body>
+    <%- include ('../templateFiles/header')  -%>
+    
+    <%  listings.forEach(listing => { %>
+            <a href="<%= listing.link %>" id="listingsContainer">
+                <!--<img class="listing-image" src="<%= listing.imageLink %>">-->
+                <h2 class="listing-title">Search Term</h2>
+                <p class="price"><%= listing.price %></p>
+            </a>       
+    <%  }); %>
+</body>
+</html>

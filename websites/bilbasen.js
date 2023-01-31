@@ -7,12 +7,15 @@ exports.buildUrl = function(searchTerm, priceRange) {
     if (searchTerm == null)
         return console.error("A search term can't be null when building a URL.");
     
-    if (priceRange[1] != null) {
-        priceFrom = priceRange[0];
-        priceTo = priceRange[1];
-
-        baseURL += `&PriceFrom=${priceFrom}${priceTo > 0 ? "&PriceTo=" + priceTo : ""}`;
+    if (typeof priceRange !== 'undefined') {
+        if (priceRange[1] != null) {
+            priceFrom = priceRange[0];
+            priceTo = priceRange[1];
+    
+            baseURL += `&PriceFrom=${priceFrom}${priceTo > 0 ? "&PriceTo=" + priceTo : ""}`;
+        }
     }
+    
 
     return baseURL;
 }

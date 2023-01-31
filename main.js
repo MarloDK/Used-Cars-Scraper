@@ -5,6 +5,7 @@ const fs = require('fs')
 
 const bilbasen = require('./websites/bilbasen')
 const dba = require('./websites/dba')
+const Module = require('module')
 
 const userAgent = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36'}
 
@@ -31,13 +32,13 @@ class Listing {
 
 
 
-//var searchUrl = bilbasen.buildUrl("Toyota Aygo", [0, 500000])
-//ScrapeUrl(searchUrl)
+var searchUrl = bilbasen.buildUrl("Corvette", [0, 500000])
+
 //searchUrl = dba.buildUrl("corvette", [0, 500000], 100);
 
 
 
-exports.ScrapeUrl = async function(url) {
+const ScrapeUrl = async function(url) {
 
     try {
         const { data } = await axios.get(url, {headers: userAgent})
@@ -61,7 +62,8 @@ exports.ScrapeUrl = async function(url) {
             let newListing = new Listing(listingUrl, imageLink, price, kilometers, productionYear, foundListings.length + 1)
             foundListings.push(newListing)
 
-            helperFunctions.sortListingsByPrice(foundListings, true)
+            foundListings = JSON.stringify(helperFunctions.sortListingsByPrice(foundListings, true), null, 2)
+            console.log(foundListings)
 
             return foundListings;
         })
@@ -69,3 +71,7 @@ exports.ScrapeUrl = async function(url) {
         console.error(error)
     }
 }
+
+//ScrapeUrl(searchUrl)
+
+exports.ScrapeUrl = ScrapeUrl
