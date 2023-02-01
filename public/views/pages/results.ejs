@@ -8,13 +8,14 @@
 </head>
 <body>
     <%- include ('../templateFiles/header')  -%>
-    
-    <%  listings.forEach(listing => { %>
-            <a href="<%= listing.link %>" id="listingsContainer">
-                <!--<img class="listing-image" src="<%= listing.imageLink %>">-->
-                <h2 class="listing-title">Search Term</h2>
-                <p class="price"><%= listing.price %></p>
+
+    <%  for (i = 0; i < listings.length; i++) { %>
+            <%- console.log(listings) %>
+            <a href="<%= listings[i].listingLink %>" id="listingsContainer">
+                <!--<img class="listing-image" src="<%= listings[i].imageLink %>">-->
+                <h2 class="listing-title"><%= i %></h2>
+                <p class="price"><%= listings[i].price %></p>
             </a>       
-    <%  }); %>
+    <%  } %>
 </body>
 </html>

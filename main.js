@@ -16,14 +16,14 @@ class Listing {
     productionYear = 0
     imageLink = ''
 
-    link = ''
+    listingLink = ''
 
-    constructor(link, imageLink, price, kilometers, productionYear, Id) {
+    constructor(listingLink, imageLink, price, kilometers, productionYear, Id) {
         this.price = price
         this.kilometers = kilometers
         this.productionYear = productionYear
         this.imageLink = imageLink
-        this.link = link
+        this.listingLink = listingLink
 
         this.Id = Id;
     }
@@ -48,8 +48,7 @@ const ScrapeUrl = async function(url) {
             return 'https://bilbasen.dk' + $(listingUrl).attr('href')
         }).get()
 
-        foundListings = new Array()
-        foundListings = await Promise.all(listingUrls.map(async listingUrl => {
+        const foundListings = await Promise.all(listingUrls.map(async (listingUrl, index) => {
             const { data: listingData } = await axios.get(listingUrl, { headers: userAgent })
             const listingPage = cheerio.load(listingData)
 
@@ -57,21 +56,32 @@ const ScrapeUrl = async function(url) {
             const price = parseInt(listingPage('.bas-MuiCarPriceComponent-value').text().replace('kr.', '').replace('.', ''))
             const kilometers = parseInt(listingPage('#root > div.nmp-ads-layout__page > div.nmp-ads-layout__content > div.bas-Wrapper-wrapper > article > main > div:nth-child(5) > div > table > tbody > tr:nth-child(3) > td').text().replace('km.', '').replace('.', ''))
             const productionYear = parseInt(listingPage('#root > div.nmp-ads-layout__page > div.nmp-ads-layout__content > div.bas-Wrapper-wrapper > article > main > div:nth-child(5) > div > table > tbody > tr:nth-child(1) > td').text())
-        
-            return new Listing(listingUrl, imageLink, price, kilometers, productionYear, foundListings.length + 1)
+
+            return {
+                listingLink: listingUrl,
+                imageLink,
+                price,
+                kilometers,
+                productionYear
+            }
+            //return new Listing(listingUrl, imageLink, price, kilometers, productionYear, index)
         }))
 
-        console.log(foundListings)
-        foundListings = JSON.stringify(helperFunctions.sortListingsByPrice(foundListings, true), null, 2)
 
-        return foundListings;
+        fs.writeFile('results.txt', JSON.stringify(helperFunctions.sortListingsByPrice(foundListings, true)), err => {
+            if (err)
+                console.error(err)
+        })
+
+        //return JSON.stringify(helperFunctions.sortListingsByPrice(foundListings, true), null, 2)
+        return helperFunctions.sortListingsByPrice(foundListings, true)
  
     } catch(error) {
         console.error(error)
     }
 }
 
-var searchUrl = bilbasen.buildUrl("Corvette", [0, 500000])
-ScrapeUrl(searchUrl)
+//var searchUrl = bilbasen.buildUrl("Corvette", [0, 500000])
+//ScrapeUrl(searchUrl)
 
 exports.ScrapeUrl = ScrapeUrl
