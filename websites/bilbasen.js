@@ -7,7 +7,7 @@ exports.buildUrl = function(searchTerm, priceRange) {
     if (searchTerm == null)
         return console.error("A search term can't be null when building a URL.");
     
-
+    searchTerm = searchTerm.replace(' ', '%20')
 
 
     priceQuery = ""
@@ -20,6 +20,5 @@ exports.buildUrl = function(searchTerm, priceRange) {
         }
     }
     
-
     return `https://bilbasen.dk/brugt/bil?IncludeEngrosCVR=false&${priceQuery}&includeLeasing=false&free=${searchTerm}&IncludeCallForPrice=false&IncludeWithoutVehicleRegistrationTax=false`;
 }

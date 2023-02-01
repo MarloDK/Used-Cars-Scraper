@@ -37,9 +37,7 @@ class Listing {
 
 
 
-const ScrapeUrl = async function(url) {
-    console.log(url)
-
+const ScrapeUrl = async function(searchTerm, url) {
     try {
         const { data } = await axios.get(url, { headers: userAgent } )
         const $ = cheerio.load(data)
@@ -52,12 +50,21 @@ const ScrapeUrl = async function(url) {
             const { data: listingData } = await axios.get(listingUrl, { headers: userAgent })
             const listingPage = cheerio.load(listingData)
 
+            let carName = listingPage('#root > div.nmp-ads-layout__page > div.nmp-ads-layout__content > div.bas-Wrapper-wrapper > article > main > div.bas-MuiVipPageComponent-headerAndPrice > div.bas-MuiVipPageComponent-headerAndRatings > h1').text()
+            const modelName = listingPage('#root > div.nmp-ads-layout__page > div.nmp-ads-layout__content > div.bas-Wrapper-wrapper > article > main > div.bas-MuiVipPageComponent-headerAndPrice > div.bas-MuiVipPageComponent-headerAndRatings > h1 > spanas-MuiCarHeaderComponent-variant').text()
             const imageLink = listingPage('#root > div.nmp-ads-layout__page > div.nmp-ads-layout__content > div.bas-Wrapper-wrapper > article > main > div.bas-MuiVipPageComponent-mainGallery > a > div > img').attr('src')
             const price = parseInt(listingPage('.bas-MuiCarPriceComponent-value').text().replace('kr.', '').replace('.', ''))
             const kilometers = parseInt(listingPage('#root > div.nmp-ads-layout__page > div.nmp-ads-layout__content > div.bas-Wrapper-wrapper > article > main > div:nth-child(5) > div > table > tbody > tr:nth-child(3) > td').text().replace('km.', '').replace('.', ''))
             const productionYear = parseInt(listingPage('#root > div.nmp-ads-layout__page > div.nmp-ads-layout__content > div.bas-Wrapper-wrapper > article > main > div:nth-child(5) > div > table > tbody > tr:nth-child(1) > td').text())
 
+            //modelName = carName.substring(0, searchTerm)
+            carName = carName.substring(searchTerm.length, 0)
+            console.log(modelName + '\n' + carName)
+            //carName = carName.substring(0, modelName.length)
+
             return {
+                id: index,
+                name: `${carName}`,
                 listingLink: listingUrl,
                 imageLink,
                 price,
@@ -68,13 +75,13 @@ const ScrapeUrl = async function(url) {
         }))
 
 
-        fs.writeFile('results.txt', JSON.stringify(helperFunctions.sortListingsByPrice(foundListings, true)), err => {
+        fs.writeFile('results.json', JSON.stringify(helperFunctions.sortListingsByPrice(foundListings, true)), err => {
             if (err)
                 console.error(err)
         })
 
         //return JSON.stringify(helperFunctions.sortListingsByPrice(foundListings, true), null, 2)
-        return helperFunctions.sortListingsByPrice(foundListings, true)
+        //return helperFunctions.sortListingsByPrice(foundListings, true)
  
     } catch(error) {
         console.error(error)

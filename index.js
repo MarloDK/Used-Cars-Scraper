@@ -14,31 +14,29 @@ app.use(express.urlencoded( { extended: false } ));
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, '/public/views'))
 
+let shitVar = 0
+
 app.get('/', (req, res) => {
-
-    fs.readFile('results.txt', 'utf8', (err, listings) => {
-        if (err) { res.render('pages/index.ejs'); return; }
-
-        res.render('pages/results.ejs', { listings: listings })
-    })
+    res.render('pages/index.ejs')
 })
 
 app.get('/search', async (req, res) => {
-    const searchTerm = req.query.searchTerm
-    let searchUrl = bilbasen.buildUrl(searchTerm, [0, 400000])
+    fs.readFile('results.json', 'utf8', (err, listings) => {
+        if (err) { res.redirect('/'); return; }
 
-    // Returns as undefined when sent as listings variable in render function
-    //let listings = await JSON.stringify(application.ScrapeUrl(searchUrl))
-    let listings = await application.ScrapeUrl(searchUrl)
-    console.log(listings)
-
-    // If I send this as the listings in the render function, it works
-    //let listings = [{link: 'https://buttfucknowhere.com/', price: 200000}, {link: 'https://buttfucknowhere.com/', price: 230000}]
-
-
-    res.render('pages/results.ejs', { listings: await JSON.stringify(application.ScrapeUrl(searchUrl)) }) // JSON.stringify(allListings)
+        res.render('pages/results.ejs', { listings: JSON.parse(listings) })
+    })
 })
 
+
+app.post('/getinfo', async (req, res) => {
+    const searchTerm = req.body.searchTerm
+    let searchUrl = bilbasen.buildUrl(searchTerm, [0, 400000])
+
+    await application.ScrapeUrl(searchTerm, searchUrl)
+
+    res.redirect('/search')
+})
 
 app.listen(8080, () => {
     console.log("Now listening on port 8080")
