@@ -35,7 +35,7 @@ class Listing {
 
 //searchUrl = dba.buildUrl("corvette", [0, 500000], 100);
 
-
+//ScrapeUrl
 
 const ScrapeUrl = async function(searchTerm, url) {
     try {
@@ -50,17 +50,31 @@ const ScrapeUrl = async function(searchTerm, url) {
             const { data: listingData } = await axios.get(listingUrl, { headers: userAgent })
             const listingPage = cheerio.load(listingData)
 
-            let carName = listingPage('#root > div.nmp-ads-layout__page > div.nmp-ads-layout__content > div.bas-Wrapper-wrapper > article > main > div.bas-MuiVipPageComponent-headerAndPrice > div.bas-MuiVipPageComponent-headerAndRatings > h1').text()
-            const modelName = listingPage('#root > div.nmp-ads-layout__page > div.nmp-ads-layout__content > div.bas-Wrapper-wrapper > article > main > div.bas-MuiVipPageComponent-headerAndPrice > div.bas-MuiVipPageComponent-headerAndRatings > h1 > spanas-MuiCarHeaderComponent-variant').text()
+            let carName = listingPage('#root > div.nmp-ads-layout__page > div.nmp-ads-layout__content > div.bas-Wrapper-wrapper > article > main > div.bas-MuiVipPageComponent-headerAndPrice > div.bas-MuiVipPageComponent-headerAndRatings > h1').attr('title')
+
+            const modelName = listingPage('#root > div.nmp-ads-layout__page > div.nmp-ads-layout__content > div.bas-Wrapper-wrapper > article > main > div.bas-MuiVipPageComponent-headerAndPrice > div.bas-MuiVipPageComponent-headerAndRatings > h1 > span').text()
             const imageLink = listingPage('#root > div.nmp-ads-layout__page > div.nmp-ads-layout__content > div.bas-Wrapper-wrapper > article > main > div.bas-MuiVipPageComponent-mainGallery > a > div > img').attr('src')
             const price = parseInt(listingPage('.bas-MuiCarPriceComponent-value').text().replace('kr.', '').replace('.', ''))
             const kilometers = parseInt(listingPage('#root > div.nmp-ads-layout__page > div.nmp-ads-layout__content > div.bas-Wrapper-wrapper > article > main > div:nth-child(5) > div > table > tbody > tr:nth-child(3) > td').text().replace('km.', '').replace('.', ''))
             const productionYear = parseInt(listingPage('#root > div.nmp-ads-layout__page > div.nmp-ads-layout__content > div.bas-Wrapper-wrapper > article > main > div:nth-child(5) > div > table > tbody > tr:nth-child(1) > td').text())
 
             //modelName = carName.substring(0, searchTerm)
-            carName = carName.substring(searchTerm.length, 0)
-            console.log(modelName + '\n' + carName)
+
+            //carName = carName.substring(searchTerm.length, 0)
+            //console.log(modelName + '\n' + carName)
+
+            console.log(carName + '\n' + modelName)
+            if (carName.length > 27) {
+                carName = carName.substring(0, 27)
+
+                carName = nameCleanupRecursive()
+                
+                carName += '...'
+            }
+
+
             //carName = carName.substring(0, modelName.length)
+            
 
             return {
                 id: index,
@@ -88,7 +102,21 @@ const ScrapeUrl = async function(searchTerm, url) {
     }
 }
 
+function nameCleanupRecursive(name) {
+
+    let lastChar = carName.slice(carName.length - 1);
+
+    if (lastChar == '.' || lastChar == ' ') {
+        carName = carName.substring(0, carName.length - 1)
+        nameCleanupRecursive()
+    }
+
+    return carName;
+}
+
+
 //var searchUrl = bilbasen.buildUrl("Corvette", [0, 500000])
-//ScrapeUrl(searchUrl)
+//console.log(searchUrl)
+//ScrapeUrl("Corvette", searchUrl)
 
 exports.ScrapeUrl = ScrapeUrl

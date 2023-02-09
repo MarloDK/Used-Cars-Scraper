@@ -4,18 +4,44 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
     <title>Car Finder</title>
+
+    <link rel="stylesheet" type="text/css" href="styling/base.css"/>
 </head>
 <body>
     <%- include ('../templateFiles/header')  -%>
 
+
+
+
+
+
     <%  for (i = 0; i < listings.length; i++) { %>
-            <%- console.log(listings) %>
-            <a href="<%= listings[i].listingLink %>" target="_blank" id="listingsContainer">
-                <!--<img class="listing-image" src="<%= listings[i].imageLink %>">-->
-                <h2 class="listing-title"><%= i %></h2>
-                <p class="price"><%= listings[i].price %></p>
-            </a>       
+        <a class="listing-container" href="<%= listings[i].listingLink %>" target="_blank" >
+            <img src="https://via.placeholder.com/150">
+
+            <div class="infoBox">
+                <div class="infoBox--headers">
+                    <h3 class="vehicle_name"><%= listings[i].name %></h3>
+                    <h3 class="vehicle_price"><%= listings[i].price %> kr</h3>
+                </div>
+
+                <span class="seperator"></span>
+
+                <table class="infoBox--information">
+                    <tr>
+                        <td>Kilometer: <%= listings[i].kilometers %></td>
+                        <td>Drivmiddel: Benzin</td>
+                    </tr>
+
+                    <tr>
+                        <td>Årgang: <%= listings[i].productionYear %></td>
+                        <td>Km/l: 14</td>
+                    </tr>
+                </table>
+            </div>
+        </a>
     <%  } %>
 </body>
 </html>

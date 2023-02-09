@@ -1,5 +1,149 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700&display=swap');
+
 * {
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+
+    font-family: 'Inter';
+    font-style: normal;
+}
+
+body, html {
+    background: #F8F8F8;
+}
+
+.seperator {
+    width: 40px;
+    height: 2px;
+    background-color: #DBDBDB;
+    margin-top: 5px;
+}
+
+/* || Page Header */
+#page-header {
+    margin-top: 10vh;
+
+    text-align: center;
+
+    color: #454545;
+}
+
+#page-header h1 {
+    font-weight: 400;
+    font-size: 60px;
+    line-height: 73px;
+}
+
+#page-header form {
+    display: flex;
+
+    border-bottom: 1px solid #454545;
+
+    width: 20vw;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    margin-top: 1rem;
+    margin-bottom: 3rem;
+
+    padding: .3rem 0;
+}
+
+#page-header #searchBar {
+    outline: none;
+    border: none;
+    
+    width: 90%;
+
+    color: #454545;
+    background-color: #FFFFFF00;
+
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+}
+
+#page-header #searchBar::placeholder {
+    color: #D0D0D0;
+    opacity: 1;
+}
+
+#page-header input[type="submit"] {
+    outline: none;
+    border: none;
+
+    width: 10%;
+    font-size: 20px;
+
+    background-color: #ffffff00;
+}
+
+/* || Listing Containers */
+.listing-container {
+    background-color: #FFFFFF;
+    border-radius: 10px;
+
+    padding: 10px;
+
+    width: 600px;
+    height: 120px;
+
+    margin-left: auto;
+    margin-right: auto;
+
+    display: flex;
+
+    margin-bottom: 35px;
+}
+
+a {
+    text-decoration: none;
+}
+
+.listing-container img {
+    width: auto;
+    height: 100px;
+
+    border-radius: 10px;
+}
+
+.listing-container .infoBox {
+    margin: 0 5%;
+    width: 100%;
+
+    display: flex;
+    flex-direction: column;
+}
+
+.listing-container .infoBox--headers {
+    font-size: 15px;
+    width: 100%;
+
+    display: flex;
+    justify-content: space-between;
+
+    color: #454545;
+}
+
+.listing-container .infoBox--headers .vehicle_name {
+    display: inline-block;
+    text-align: left;
+}
+
+.listing-container .infoBox--headers .vehicle_price {
+    display: inline-block;
+    text-align: right;
+}
+
+.listing-container .infoBox--information tr {
+    margin-top: 10px;
+    display: flex;
+    justify-content: space-between;
+}
+
+.listing-container .infoBox--information td {
+    color: #7D7D7D;
+    font-size: 15px;
 }
