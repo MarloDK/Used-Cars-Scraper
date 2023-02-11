@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 app.get('/search', async (req, res) => {
     fs.readFile('results.json', 'utf8', (err, listings) => {
         if (err) { res.redirect('/'); return; }
-
+        
         res.render('pages/results.ejs', { listings: JSON.parse(listings) });
     });
 });

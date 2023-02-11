@@ -12,18 +12,17 @@ const InitScraping = async function(searchTerm, priceRange = [0, 1000000]) {
     console.warn('Add price search options!');
 
     let bilbasenUrl = bilbasen.BuildUrl(searchTerm, priceRange);
-    console.log("Bilbasen URL: " + bilbasenUrl)
-
     let dbaUrl = dba.BuildUrl(searchTerm, priceRange);
 
-    let bilbasenListings = await ScrapeUrl(bilbasen, bilbasenUrl, searchTerm);
-    console.log(bilbasenListings);
+    console.log('ScrapeHandler 17, URLS:\n\nBilbasen: ' + bilbasenUrl + "\nDBA: " + dbaUrl);
 
     let dbaListings = await ScrapeUrl(dba, dbaUrl, searchTerm);
+    let bilbasenListings = await ScrapeUrl(bilbasen, bilbasenUrl, searchTerm);
+    
+    console.log(bilbasenListings);
 
-    let allListings = bilbasenListings.concat(dbaListings);
-
-    return allListings;
+    //let allListings = [...dbaListings, ...bilbasenListings];
+    return bilbasenListings;
 }
 
 const ScrapeUrl = async function(scrapedSite, url, searchTerm) {
@@ -35,7 +34,10 @@ const ScrapeUrl = async function(scrapedSite, url, searchTerm) {
         const $ = cheerio.load(data);
 
         const listingUrls = $(scrapedSite.listingQuery).map((_, listingUrl) => {
-            return scrapedSite.baseUrl + $(listingUrl).attr('href');
+            if (scrapedSite == bilbasen)
+                return scrapedSite.baseUrl + $(listingUrl).attr('href');
+
+            return $(listingUrl).attr('href');
         }).get();
 
         let foundListings = await Promise.all(listingUrls.map(async (listingUrl, index) => {
@@ -51,7 +53,6 @@ const ScrapeUrl = async function(scrapedSite, url, searchTerm) {
                 listingInfo.name += '...';
             }
 
-            //console.log(listingInfo);
             return listingInfo;
         }));
 

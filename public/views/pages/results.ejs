@@ -16,32 +16,35 @@
 
 
 
+    <% if (listings.length == 0) { %>
+        <h2 id="empty-search">No results were found.</h2>
+    <% } else { %>
+        <%  for (i = 0; i < listings.length; i++) { %>
+            <a class="listing-container" href="<%= listings[i].listingLink %>" target="_blank" >
+                <img src="https://via.placeholder.com/150">
 
-    <%  for (i = 0; i < listings.length; i++) { %>
-        <a class="listing-container" href="<%= listings[i].listingLink %>" target="_blank" >
-            <img src="https://via.placeholder.com/150">
+                <div class="infoBox">
+                    <div class="infoBox--headers">
+                        <h3 class="vehicle_name"><%= listings[i].name %></h3>
+                        <h3 class="vehicle_price"><%= listings[i].price !== null ? listings[i].price.toLocaleString('da-DK') : '-' %> kr</h3>
+                    </div>
 
-            <div class="infoBox">
-                <div class="infoBox--headers">
-                    <h3 class="vehicle_name"><%= listings[i].name %></h3>
-                    <h3 class="vehicle_price"><%= listings[i].price %> kr</h3>
+                    <span class="seperator"></span>
+
+                    <table class="infoBox--information">
+                        <tr>
+                            <td>Kilometer: <%= listings[i].kilometers !== null ? listings[i].kilometers : '-' %></td>
+                            <td>Drivmiddel: Benzin</td>
+                        </tr>
+
+                        <tr>
+                            <td>Årgang: <%= listings[i].productionYear !== null ? listings[i].productionYear : '-' %></td>
+                            <td>Km/l: 14</td>
+                        </tr>
+                    </table>
                 </div>
-
-                <span class="seperator"></span>
-
-                <table class="infoBox--information">
-                    <tr>
-                        <td>Kilometer: <%= listings[i].kilometers %></td>
-                        <td>Drivmiddel: Benzin</td>
-                    </tr>
-
-                    <tr>
-                        <td>Årgang: <%= listings[i].productionYear %></td>
-                        <td>Km/l: 14</td>
-                    </tr>
-                </table>
-            </div>
-        </a>
+            </a>
+        <%  } %>
     <%  } %>
 </body>
 </html>

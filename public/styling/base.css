@@ -96,6 +96,14 @@ body, html {
     display: flex;
 
     margin-bottom: 35px;
+    transition: 0.35s;
+}
+
+.listing-container:hover {
+    background-color: #efefef;
+    transform: scale(1.02);
+    cursor: pointer;
+    transition: 0.2s;
 }
 
 a {

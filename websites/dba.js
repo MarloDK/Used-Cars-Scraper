@@ -3,7 +3,7 @@ const cheerio = require('cheerio');
 
 
 const baseUrl = 'https://dba.dk';
-const listingQuery = '.dbaListing .listing';
+const listingQuery = ' #content > div.sidebar-layout > section > table > tbody > tr > td.pictureColumn > div > a';
 
 exports.BuildUrl = function(searchTerm, priceRange) {
     if (searchTerm == null)
@@ -21,7 +21,7 @@ exports.BuildUrl = function(searchTerm, priceRange) {
         }
     }
 
-    return `${baseUrl}/biler/?soeg=${searchTerm}?${priceQuery}`;
+    return `${baseUrl}/biler/?soeg=${searchTerm}&${priceQuery}`;
 }
 
 exports.ScrapeInformation = async function(url, index, searchTerm, userAgent) {

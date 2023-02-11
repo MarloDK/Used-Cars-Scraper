@@ -1,11 +1,12 @@
 const fs = require('fs');
 
 const SortListingsByPrice = function(listings, highestFirst = false) {
-    if (listings)
+    if (!listings)
         return console.error("Listings was empty");
 
+    let listingsClean = listings.filter(listing => listing !== false)
 
-    let listingsClean = [];
+    /*let listingsClean = [];
     // Go through each entry in the listings array
     for (let index = 0; index < listings.length; index++) {
 
@@ -15,7 +16,7 @@ const SortListingsByPrice = function(listings, highestFirst = false) {
 
         // If the entry wasn't a false entry, add it to the clean array
         listingsClean.push(listings[index]);
-    }
+    }*/
 
     for (let i = 0; i < listingsClean.length; i++){
         for (let j = 0; j < (listingsClean.length - i - 1); j++){
@@ -44,13 +45,23 @@ const NameCleanupRecursive = function(name) {
 
     if (lastChar == '.' || lastChar == ' ') {
         name = name.substring(0, name.length - 1);
-        NameCleanupRecursive();
+        NameCleanupRecursive(name);
     }
 
     return name;
 }
 
 const WriteListingsToFile = function(allListings) {
+
+    /*try {
+        fs.writeFileSync('/Users/joe/test.txt', SortListingsByPrice(allListings, true));
+        console.log("Saved successfully");
+      } catch (err) {
+        console.error(err);
+      }*/
+
+
+    //console.log(allListings)
     fs.writeFile('results.json', JSON.stringify(SortListingsByPrice(allListings, true)), err => {
         if (err)
             console.error(err);
