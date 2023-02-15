@@ -21,7 +21,7 @@ const InitScraping = async function(searchTerm, priceRange = [0, 1000000]) {
     
     console.log(bilbasenListings);
 
-    //let allListings = [...dbaListings, ...bilbasenListings];
+    let allListings = [...dbaListings, ...bilbasenListings];
     return bilbasenListings;
 }
 
