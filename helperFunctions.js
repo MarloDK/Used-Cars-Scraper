@@ -1,24 +1,52 @@
-exports.sortListingsByPrice = function(listings, highestFirst = false) {
+const fs = require('fs');
 
-    for (let i = 0; i < listings.length; i++){
-        for (let j = 0; j < (listings.length - i - 1); j++){
+const SortListingsByPrice = function(listings, highestFirst = false) {
+    if (!listings)
+        return console.error("Listings was empty");
+
+    // Remove all entries of 'false'
+    let listingsClean = listings.filter(listing => listing !== false)
+
+    for (let i = 0; i < listingsClean.length; i++){
+        for (let j = 0; j < (listingsClean.length - i - 1); j++){
+            
            
             // Checking if the item at present iteration
             // is greater than the next iteration
-            if (listings[j].price > listings[j+1].price){
+            if (listingsClean[j].price > listingsClean[j+1].price) {
              
                 // If the condition is true then swap them
-                var temp = listings[j]
-                listings[j] = listings[j + 1]
-                listings[j + 1] = temp
+                var temp = listingsClean[j];
+                listingsClean[j] = listingsClean[j + 1];
+                listingsClean[j + 1] = temp;
             }
         }
     }
 
     if (highestFirst)
-        listings = listings.reverse()
+        listingsClean = listingsClean.reverse();
 
-    // Print the sorted array
-    console.log(listings);
-    return listings;
+    return listingsClean;
 }
+
+const NameCleanupRecursive = function(name) {
+    let lastChar = name.slice(name.length - 1);
+
+    if (lastChar == '.' || lastChar == ' ') {
+        name = name.substring(0, name.length - 1);
+        NameCleanupRecursive(name);
+    }
+
+    return name;
+}
+
+const WriteListingsToFile = function(allListings) {
+    fs.writeFile('results.json', JSON.stringify(SortListingsByPrice(allListings, true)), err => {
+        if (err)
+            console.error(err);
+    })
+}
+
+exports.SortListingsByPrice = SortListingsByPrice;
+exports.NameCleanupRecursive = NameCleanupRecursive;
+exports.WriteListingsToFile = WriteListingsToFile;

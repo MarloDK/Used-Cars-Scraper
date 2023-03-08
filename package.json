@@ -2,7 +2,7 @@
   "name": "used-cars-scraper",
   "version": "1.0.0",
   "description": "",
-  "main": "main.js",
+  "main": "scrapeHandler.js",
   "scripts": {
     "devStart": "nodemon index.js"
   },

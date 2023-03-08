@@ -96,6 +96,14 @@ body, html {
     display: flex;
 
     margin-bottom: 35px;
+    transition: 0.35s;
+}
+
+.listing-container:hover {
+    background-color: #efefef;
+    transform: scale(1.02);
+    cursor: pointer;
+    transition: 0.2s;
 }
 
 a {
@@ -103,8 +111,8 @@ a {
 }
 
 .listing-container img {
-    width: auto;
-    height: 100px;
+    max-width: 100px;
+    max-height: 100px;
 
     border-radius: 10px;
 }
