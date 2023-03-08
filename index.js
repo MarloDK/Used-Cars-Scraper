@@ -23,6 +23,7 @@ app.get('/search', async (req, res) => {
     fs.readFile('results.json', 'utf8', (err, listings) => {
         if (err) { res.redirect('/'); return; }
         
+        
         res.render('pages/results.ejs', { listings: JSON.parse(listings) });
     });
 });
@@ -31,10 +32,14 @@ app.get('/search', async (req, res) => {
 app.post('/getinfo', async (req, res) => {
     const searchTerm = req.body.searchTerm;
 
+    startTime = Date.now();
+
     let finished = await application.ScrapeWebsites(searchTerm);
 
-    if (finished)
-        res.redirect('/search');
+    loadTime = `Took ${Math.floor((Date.now() - startTime) / 1000)} Seconds to load.`;
+    console.log(loadTime);
+
+    res.redirect('/search');
 });
 
 app.listen(8080, () => {

@@ -6,7 +6,11 @@ const helperFunctions = require('./helperFunctions');
 const bilbasen = require('./websites/bilbasen');
 const dba = require('./websites/dba');
 
-const userAgent = {'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36'};
+const userAgent = {
+    'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/79.0.3945.88 Safari/537.36',
+    "Referer": "https://www.google.com/",
+	"Referrer-Policy": "strict-origin-when-cross-origin"
+};
 
 const InitScraping = async function(searchTerm, priceRange = [0, 1000000]) {
     console.warn('Add price search options!');
@@ -19,10 +23,10 @@ const InitScraping = async function(searchTerm, priceRange = [0, 1000000]) {
     let dbaListings = await ScrapeUrl(dba, dbaUrl, searchTerm);
     let bilbasenListings = await ScrapeUrl(bilbasen, bilbasenUrl, searchTerm);
     
-    console.log(bilbasenListings);
-
     let allListings = [...dbaListings, ...bilbasenListings];
-    return bilbasenListings;
+
+    console.log(`Found ${allListings.length} listings`)
+    return allListings;
 }
 
 const ScrapeUrl = async function(scrapedSite, url, searchTerm) {
@@ -40,11 +44,25 @@ const ScrapeUrl = async function(scrapedSite, url, searchTerm) {
             return $(listingUrl).attr('href');
         }).get();
 
+        let lastListing = null;
+
         let foundListings = await Promise.all(listingUrls.map(async (listingUrl, index) => {
             let listingInfo = await scrapedSite.ScrapeInformation(listingUrl, index, userAgent);
 
-            if (typeof listingInfo.name === 'undefined' || !listingInfo.name.includes(searchTerm))
+            if (typeof listingInfo.name === 'undefined' || !listingInfo.name.toLowerCase().includes(searchTerm.toLowerCase()) || listingInfo.price < 10000)
                 return false;
+
+            if (lastListing !== null) {
+                console.log("Last: " + lastListing.name + "\nNew: " + listingInfo.name);
+                console.log(lastListing.name == listingInfo.name + "\n\n")
+                if (lastListing.name == listingInfo.name || lastListing.price == listingInfo.price) {
+                    console.log("hallå fister")
+                    return false;
+                }
+            }
+                
+
+            lastListing = Object.assign({}, listingInfo);
 
             if (listingInfo.name.length > 29) {
                 listingInfo.name = listingInfo.name.substring(0, 27);

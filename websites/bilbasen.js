@@ -24,8 +24,8 @@ exports.BuildUrl = function(searchTerm, priceRange) {
     return `${baseUrl}/brugt/bil?IncludeEngrosCVR=false&${priceQuery}&includeLeasing=false&free=${searchTerm}&IncludeCallForPrice=false&IncludeWithoutVehicleRegistrationTax=false`;
 }
 
-exports.ScrapeInformation = async function(url, index, searchTerm, userAgent) {
-    const { data: listingData } = await axios.get(url, { headers: userAgent });
+exports.ScrapeInformation = async function(url, index, userAgent) {
+    const { data: listingData } = await axios.get(url, userAgent);
     const listingPage = cheerio.load(listingData);
 
     let carName = listingPage('#root > div.nmp-ads-layout__page > div.nmp-ads-layout__content > div.bas-Wrapper-wrapper > article > main > div.bas-MuiVipPageComponent-headerAndPrice > div.bas-MuiVipPageComponent-headerAndRatings > h1').attr('title');
@@ -40,7 +40,7 @@ exports.ScrapeInformation = async function(url, index, searchTerm, userAgent) {
 
     return {
         id: index,
-        name: "" + carName,
+        name: carName,
         listingLink: url,
         imageLink,
         price,

@@ -7,7 +7,6 @@ const ScrapeWebsites = async function(searchTerm) {
 
     HelperFunctions.WriteListingsToFile(foundListings);
 }
-
-ScrapeWebsites("Corvette");
+//ScrapeWebsites("Corvette");
 
 exports.ScrapeWebsites = ScrapeWebsites;
