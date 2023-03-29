@@ -21,7 +21,6 @@
     <% } else { %>
         <%  for (i = 0; i < listings.length; i++) { %>
             <a class="listing-container" href="<%= listings[i].listingLink %>" target="_blank" >
-                <!--<img src="https://via.placeholder.com/150">-->
                 <img src="../../images/car-placeholder.png">
 
                 <div class="infoBox">
@@ -40,7 +39,7 @@
 
                         <tr>
                             <td>Årgang: <%= listings[i].productionYear !== null ? listings[i].productionYear : '-' %></td>
-                            <td>Km/l: 14</td>
+                            <!--<td>Km/l: 14</td>-->
                         </tr>
                     </table>
                 </div>
