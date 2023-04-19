@@ -22,7 +22,7 @@ body, html {
 
 /* || Page Header */
 #page-header {
-    margin-top: 10vh;
+    padding-top: 10vh;
 
     text-align: center;
 
@@ -154,4 +154,19 @@ a {
 .listing-container .infoBox--information td {
     color: #7D7D7D;
     font-size: 15px;
+}
+
+#empty-search {
+    width: 100%;
+    
+    margin-left: auto;
+    margin-right: auto;
+
+    text-align: center;
+    font-family: 'Inter';
+    font-style: normal;
+    color: #454545;
+    font-weight: 300;
+    font-style: italic;
+    font-size: small;
 }

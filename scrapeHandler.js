@@ -31,7 +31,7 @@ const InitScraping = async function(searchTerm, priceRange = [0, 1000000]) {
     // Kombiner de to lister til en stor liste
     let allListings = [...dbaListings, ...bilbasenListings];
 
-    console.log(`Found ${allListings.length} listings`)
+    console.log(`${allListings}\n\nFound ${allListings.length} listings`)
 
     // Returnér opslagene
     return allListings;

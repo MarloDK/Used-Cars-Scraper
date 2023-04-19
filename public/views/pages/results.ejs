@@ -15,7 +15,6 @@
 
 
 
-
     <% if (listings.length == 0) { %>
         <h2 id="empty-search">No results were found.</h2>
     <% } else { %>
@@ -28,7 +27,6 @@
                         <h3 class="vehicle_name"><%= listings[i].name %></h3>
                         <h3 class="vehicle_price"><%= listings[i].price !== null ? listings[i].price.toLocaleString('da-DK') : '-' %> kr</h3>
                     </div>
-
                     <span class="seperator"></span>
 
                     <table class="infoBox--information">
@@ -39,7 +37,6 @@
 
                         <tr>
                             <td>Årgang: <%= listings[i].productionYear !== null ? listings[i].productionYear : '-' %></td>
-                            <!--<td>Km/l: 14</td>-->
                         </tr>
                     </table>
                 </div>
