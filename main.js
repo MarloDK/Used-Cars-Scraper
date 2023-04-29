@@ -11,5 +11,5 @@ const ScrapeWebsites = async function(searchTerm) {
     HelperFunctions.WriteListingsToFile(foundListings);
 }
 
-// Exporter funktionen ScrapeWebsites så andre filer kan tilgå den
+// Eksporter funktionen ScrapeWebsites så andre filer kan tilgå den
 exports.ScrapeWebsites = ScrapeWebsites;

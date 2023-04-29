@@ -8,7 +8,7 @@ const baseUrl = 'https://dba.dk';
 // CSS selector til at få fat i opslag på hovedsiden
 const listingQuery = ' #content > div.sidebar-layout > section > table > tbody > tr > td.pictureColumn > div > a';
 
-// Exporterer funktionen BuildUrul så andre filer kan tilgå den
+// Eksporterer funktionen BuildUrul så andre filer kan tilgå den
 exports.BuildUrl = function(searchTerm, priceRange) {
     // Hvis searchTerm ikke er sat, returner en fejl
     if (searchTerm == null)
@@ -34,8 +34,8 @@ exports.BuildUrl = function(searchTerm, priceRange) {
     return `${baseUrl}/biler/?soeg=${searchTerm}&${priceQuery}`;
 }
 
-// Exporterer funktionen ScrapeInformation så andre filer kan tilgå den
-exports.ScrapeInformation = async function(url, index, searchTerm, userAgent) {
+// Eksporterer funktionen ScrapeInformation så andre filer kan tilgå den
+exports.ScrapeInformation = async function(url, index, userAgent) {
     // Opret en GET request til hjemmesiden fra url variablet og benyt vores UserAgent
     const { data: listingData } = await axios.get(url, userAgent);
     // Konverterer data variblet til HTML vi kan processere som CSS
@@ -50,12 +50,17 @@ exports.ScrapeInformation = async function(url, index, searchTerm, userAgent) {
     
     let productionYear, kilometers, fuelType = "";
     
+    // Får informationstabellens børn i html hierakiet, og looper gennem dem via .map()
     allInfo = informationTable.children().map(function() {
 
+        // Opstiller variablet 'saveValue', til at beskrive hvilken information vi vil gemme
         saveValue = 0;
+        // Får opslagssidens børn i html hierakiet, og filtrerer dem
         listingPage(this).children().filter(function() {
 
+            // Finder elementets værdi, og fjerner '<td>' og '.' fra html koden
             elementValue = listingPage(this).text().replace('<td>', '').replace('</td>', '').replace('.', '');
+            // Hvis værdien ikke er ingenting, eller '-/-', gemmer vi værdien via. variablet 'saveValue' fra før
             if (!(elementValue === "" || elementValue === "-/-")) {
                 switch (saveValue) {
                     case 1:
@@ -70,6 +75,17 @@ exports.ScrapeInformation = async function(url, index, searchTerm, userAgent) {
                     default:
                         break;
                 }
+                
+                // Hvis variablet 'saveValue' ikke er sat, har vi ikke aflæst tabellens værdi overskiftsværdi
+
+                // Opbygget således:
+                // |---------|------|
+                // | Modelår | 2009 |
+                // |---------|------|
+
+                // Først læses kassen med "Modelår", derefter kassen "2009"
+                // Hvis værdien i kassen med "Modelår" ikke er blevet læst, bliver den bestemt herunder
+
 
                 switch (elementValue) {
                     case 'Modelår':
@@ -89,6 +105,7 @@ exports.ScrapeInformation = async function(url, index, searchTerm, userAgent) {
         })
     })
 
+    // Looper gennem dataen vi fandt i loopet før, og sætter værdierne til de korresponderene variabler
     for (let index = 0; index < allInfo.length; index++) {
         const element = allInfo[index];
         switch (element) {

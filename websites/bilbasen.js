@@ -8,7 +8,7 @@ const baseUrl = 'https://bilbasen.dk';
 // CSS selector til at få fat i opslag på hovedsiden
 const listingQuery = '.bb-listing-clickable .listing-heading';
 
-// Exporterer funktionen BuildUrul så andre filer kan tilgå den
+// Eksporterer funktionen BuildUrul så andre filer kan tilgå den
 exports.BuildUrl = function(searchTerm, priceRange) {
     // Hvis searchTerm ikke er sat, returner en fejl
     if (searchTerm == null)
@@ -34,7 +34,7 @@ exports.BuildUrl = function(searchTerm, priceRange) {
     return `${baseUrl}/brugt/bil?IncludeEngrosCVR=false&${priceQuery}&includeLeasing=false&free=${searchTerm}&IncludeCallForPrice=false&IncludeWithoutVehicleRegistrationTax=false`;
 }
 
-// Exporterer funktionen ScrapeInformation så andre filer kan tilgå den
+// Eksporterer funktionen ScrapeInformation så andre filer kan tilgå den
 exports.ScrapeInformation = async function(url, index, userAgent) {
     // Opret en GET request til hjemmesiden fra url variablet og benyt vores UserAgent
     const { data: listingData } = await axios.get(url, userAgent);
