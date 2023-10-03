@@ -5,7 +5,8 @@ A web app that scrapes Danish websites for used cars (https://dba.dk/ and https:
 
 
 
-#### ***!! IMPORTANT !!!***
+***!!! IMPORTANT !!!
+
 *This is a project for my programming exam and does not comply with the rules of any of the two websites. Do not use to find your next vehicle, but rather to learn how web scraping and web routing works in it's basic form. This is not a commercial product!*
 
 ## Installation
